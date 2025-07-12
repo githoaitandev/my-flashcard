@@ -68,7 +68,7 @@ function WritingPracticeContent() {
 
         // If we have a deckId, also fetch the deck name
         if (deckId) {
-          const deckResponse = await fetch(`${baseUrl}/api/decks/${deckId}`);
+          const deckResponse = await fetch(`${baseUrl}/api/decks?id=${deckId}`);
           if (deckResponse.ok) {
             const deckData = await deckResponse.json();
             setDeckName(deckData.data.name);
