@@ -12,7 +12,7 @@ import { useRouter, usePathname } from "next/navigation";
 import type { User } from "@/lib/supabase/browserClient";
 
 // Protected routes that require authentication
-const protectedRoutes = ["/decks", "/practice", "/study", "/flashcards"];
+const protectedRoutes = ["/decks", "/practice", "/study", "/flashcards", "/"];
 
 // Routes that are only accessible when not logged in
 const authRoutes = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
