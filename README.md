@@ -89,9 +89,31 @@ The application uses Supabase PostgreSQL database. The main models are:
 
 Row Level Security (RLS) policies ensure that users can only access their own data.
 
+## Practice Modes
+
+The application offers two practice modes to enhance vocabulary learning:
+
+1. **Writing Practice**: Practice writing English words based on their Vietnamese meanings with instant feedback.
+2. **Multiple Choice**: Test your knowledge with multiple-choice questions.
+
+These modes are accessible from the Practice page and can be filtered by deck.
+
+## Study Features
+
+- **Flashcard Slider**: Navigate through flashcards with a slider interface.
+- **Progress Tracking**: Visual progress bar and statistics for each study session.
+- **Session Summary**: View a summary of your performance after completing a session.
+- **Deck Selection**: Choose specific decks to study or review all available flashcards.
+
 ## Built With
 
 - [Next.js](https://nextjs.org/) - React framework
 - [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
 - [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
 - [Supabase](https://supabase.com/) - PostgreSQL database and API service
+
+## Advanced React Usage
+
+- **Suspense for Data Fetching**: The application uses React's `Suspense` to handle asynchronous operations like fetching search parameters and study data. This ensures a smooth user experience with fallback loading states.
+
+- **Dynamic Routing**: Leverages Next.js dynamic routing to create user-specific and deck-specific pages for studying and practicing flashcards.

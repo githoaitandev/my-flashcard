@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import Link from "next/link";
 
-export default function PracticePage() {
+export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <PracticePageContent />

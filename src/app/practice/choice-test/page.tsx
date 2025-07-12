@@ -7,7 +7,7 @@ import { Flashcard } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
 import MultipleChoiceCard from "@/components/cards/MultipleChoiceCard";
 
-export default function ChoiceTestPage() {
+export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [cards, setCards] = useState<Flashcard[]>([]);
