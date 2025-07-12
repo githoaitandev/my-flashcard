@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FlashcardCreate, PartOfSpeech, partsOfSpeech } from "@/lib/types";
+import { FlashcardCreate, partsOfSpeech } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
 interface FlashcardFormProps {

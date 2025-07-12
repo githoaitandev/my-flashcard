@@ -1,6 +1,5 @@
 import { supabase } from "./supabase/browserClient";
-import { NextRequest, NextResponse } from "next/server";
-import { errorResponse } from "./api-utils";
+import { NextRequest } from "next/server";
 
 export async function authenticateRequest(request: NextRequest) {
   // Get the auth cookie from the request

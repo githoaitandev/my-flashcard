@@ -132,7 +132,7 @@ export default function FlashcardSlider({
                   {card.example && (
                     <div className="mt-4">
                       <p className="italic text-gray-600 text-center break-words">
-                        "{card.example}"
+                        &quot;{card.example}&quot;
                       </p>
                     </div>
                   )}
@@ -147,7 +147,7 @@ export default function FlashcardSlider({
                       disabled={isUpdating || card.memoryStatus === 0}
                       className="px-4 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 disabled:opacity-50"
                     >
-                      Don't Know
+                      Don&apos;t Know
                     </button>
                     <button
                       onClick={(e) => {

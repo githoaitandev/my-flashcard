@@ -52,8 +52,10 @@ export default function SignUp() {
       setTimeout(() => {
         router.push("/auth/login");
       }, 3000);
-    } catch (error: any) {
-      setToastMessage(error.message || "Sign up failed");
+    } catch (error: Error | unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Sign up failed";
+      setToastMessage(errorMessage);
       setToastStatus("error");
       setToastVisible(true);
     } finally {

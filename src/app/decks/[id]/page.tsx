@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import FlashcardList from "@/components/cards/FlashcardList";
 import ImportExport from "@/components/decks/ImportExport";
 import AddFlashcard from "@/components/cards/AddFlashcard";
 import baseUrl from "@/utils/baseUrl";
 import DeckActions from "@/components/decks/DeckActions";
+import { Flashcard } from "@/lib/types";
 
 export default async function DeckPage({
   params,
@@ -28,13 +28,17 @@ export default async function DeckPage({
   }
 
   // Organize cards by memory status
-  const newCards = deck.cards.filter((card: any) => card.memoryStatus === 0);
-  const learningCards = deck.cards.filter(
-    (card: any) => card.memoryStatus === 1
+  const newCards = deck.cards.filter(
+    (card: Flashcard) => card.memoryStatus === 0
   );
-  const reviewCards = deck.cards.filter((card: any) => card.memoryStatus === 2);
+  const learningCards = deck.cards.filter(
+    (card: Flashcard) => card.memoryStatus === 1
+  );
+  const reviewCards = deck.cards.filter(
+    (card: Flashcard) => card.memoryStatus === 2
+  );
   const masteredCards = deck.cards.filter(
-    (card: any) => card.memoryStatus === 3
+    (card: Flashcard) => card.memoryStatus === 3
   );
   console.log("Deck:", deck);
   return (

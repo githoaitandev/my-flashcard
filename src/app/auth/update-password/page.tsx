@@ -57,6 +57,7 @@ export default function UpdatePassword() {
       setTimeout(() => {
         router.push("/decks");
       }, 2000);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setToastMessage(error.message || "Failed to update password");
       setToastStatus("error");

@@ -11,10 +11,7 @@ interface FlashcardListProps {
   deckId: string;
 }
 
-export default function FlashcardList({
-  flashcards,
-  deckId,
-}: FlashcardListProps) {
+export default function FlashcardList({ flashcards }: FlashcardListProps) {
   const router = useRouter();
   const [cards, setCards] = useState<Flashcard[]>(flashcards);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
@@ -115,7 +112,7 @@ export default function FlashcardList({
                   </div>
                   {card.example && (
                     <div className="text-xs text-gray-500 mt-1 italic truncate max-w-3xs">
-                      "{card.example}"
+                      &quot;{card.example}&quot;
                     </div>
                   )}
                 </td>

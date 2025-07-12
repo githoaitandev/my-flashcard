@@ -1,8 +1,7 @@
 import { successResponse, errorResponse } from "@/lib/api-utils";
 import { createClient } from "@/lib/supabase/serverClient";
-import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const supabase = await createClient();
     const {
@@ -12,6 +11,7 @@ export async function GET(request: NextRequest) {
     if (!user) {
       return errorResponse("Unauthorized", 401);
     }
+
     // Get total count of decks
     const { count: totalDecks, error: decksError } = await supabase
       .from("deck")

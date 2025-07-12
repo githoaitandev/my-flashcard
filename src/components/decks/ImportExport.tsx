@@ -79,10 +79,9 @@ export default function ImportExport({
       // Read file
       const fileContent = await readFileAsText(importFile);
       let importData;
-
       try {
         importData = JSON.parse(fileContent);
-      } catch (e) {
+      } catch {
         throw new Error("Invalid JSON file");
       }
 

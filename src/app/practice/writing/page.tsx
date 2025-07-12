@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import WritingPracticeCard from "@/components/cards/WritingPracticeCard";
 import Link from "next/link";
 import { Flashcard } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
 
-export default function page() {
-  const router = useRouter();
+function WritingPracticeContent() {
   const searchParams = useSearchParams();
   const deckId = searchParams.get("deckId");
 
@@ -91,7 +90,7 @@ export default function page() {
     };
 
     fetchCards();
-  }, [selectedDeckId]);
+  }, [selectedDeckId, deckId]);
 
   const handleCardResult = (isCorrect: boolean) => {
     // Update stats
@@ -189,7 +188,7 @@ export default function page() {
         />
         <div className="bg-white rounded-lg p-8 shadow-md text-center">
           <p className="text-gray-600 mb-4">
-            You don't have any cards to practice at this time.
+            You don&apos;t have any cards to practice at this time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
             <Link
@@ -351,5 +350,13 @@ export default function page() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <WritingPracticeContent />
+    </Suspense>
   );
 }

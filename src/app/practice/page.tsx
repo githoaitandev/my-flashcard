@@ -1,12 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import Link from "next/link";
 
 export default function PracticePage() {
-  const router = useRouter();
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PracticePageContent />
+    </Suspense>
+  );
+}
+
+function PracticePageContent() {
   const searchParams = useSearchParams();
   const deckId = searchParams.get("deckId");
 

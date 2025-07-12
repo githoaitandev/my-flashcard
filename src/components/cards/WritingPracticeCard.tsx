@@ -58,12 +58,12 @@ export default function WritingPracticeCard({
                 lineHeight: "1.5rem",
               }}
             >
-              "
+              &quot;
               {card.example.replace(
                 new RegExp(`\\b${card.englishWord}\\b`, "i"),
                 "_______"
               )}
-              "
+              &quot;
             </p>
           </div>
         )}

@@ -1,4 +1,3 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "./serverClient";
 
@@ -6,10 +5,10 @@ import { createClient } from "./serverClient";
 const protectedPaths = ["/decks", "/practice", "/study", "/flashcards"];
 
 // Routes that are only accessible when not logged in
-const authPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
+// const authPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+  const supabaseResponse = NextResponse.next({
     request,
   });
   const supabase = await createClient();

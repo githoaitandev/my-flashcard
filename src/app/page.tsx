@@ -125,7 +125,9 @@ export default function Home() {
           </div>
         ) : (
           <div className="bg-gray-50 rounded-lg p-8 text-center">
-            <p className="text-gray-600 mb-4">You don't have any decks yet</p>
+            <p className="text-gray-600 mb-4">
+              You don&apos;t have any decks yet
+            </p>
             <Link
               href="/decks/new"
               className="inline-block px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
@@ -135,6 +137,7 @@ export default function Home() {
           </div>
         )}
       </div>
+      <p>It&apos;s a great day to learn!</p>
     </div>
   );
 }

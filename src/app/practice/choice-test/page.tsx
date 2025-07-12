@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import Link from "next/link";
 import { Flashcard } from "@/lib/types";
@@ -9,10 +8,6 @@ import baseUrl from "@/utils/baseUrl";
 import MultipleChoiceCard from "@/components/cards/MultipleChoiceCard";
 
 export default function ChoiceTestPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const deckId = searchParams.get("deckId");
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [cards, setCards] = useState<Flashcard[]>([]);
@@ -214,7 +209,7 @@ export default function ChoiceTestPage() {
         />
         <div className="bg-white rounded-lg p-8 shadow-md text-center">
           <p className="text-gray-600 mb-4">
-            You don't have any cards to practice at this time.
+            You don&apos;t have any cards to practice at this time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
             <Link

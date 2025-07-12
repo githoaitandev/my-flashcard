@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { updateSession } from "./lib/supabase/middleware";
 
 // Protected routes that require authentication
-const protectedPaths = ["/decks", "/practice", "/study", "/flashcards"];
+// const protectedPaths = ["/decks", "/practice", "/study", "/flashcards"];
 
 // Routes that are only accessible when not logged in
-const authPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
+// const authPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
 
 export async function middleware(request: NextRequest) {
   //   const response = NextResponse.next();

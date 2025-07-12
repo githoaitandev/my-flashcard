@@ -17,6 +17,7 @@ export default function MultipleChoiceCard({
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isChecked, setIsChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [options, setOptions] = useState<any[]>([]);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [shouldMoveNext, setShouldMoveNext] = useState(false);
@@ -75,7 +76,7 @@ export default function MultipleChoiceCard({
     setIsCorrect(false);
     setCountdown(null);
     prevCardId.current = card.id;
-  }, [card.id, allCards]);
+  }, [card.id, allCards, card.englishWord, card.partOfSpeech]);
 
   const handleOptionSelect = (optionId: string) => {
     if (!isChecked) {
@@ -161,12 +162,12 @@ export default function MultipleChoiceCard({
                 minHeight: "3rem",
               }}
             >
-              "
+              &quot;
               {card.example.replace(
                 new RegExp(`\\b${card.englishWord}\\b`, "i"),
                 "_______"
               )}
-              "
+              &quot;
             </p>
           </div>
         )}

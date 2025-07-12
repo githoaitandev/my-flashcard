@@ -45,7 +45,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
-    } catch (error) {
+    } catch {
       setUser(null);
     }
   };
@@ -88,6 +88,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
     const {
       data: { subscription },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       console.log("Auth event:", event, session);
       setUser(session?.user ?? null);

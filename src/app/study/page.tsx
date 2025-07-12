@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import FlashcardSlider from "@/components/cards/FlashcardSlider";
 import Link from "next/link";
 import { Flashcard } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
 
-export default function StudyPage() {
-  const router = useRouter();
+function StudyContent() {
   const searchParams = useSearchParams();
   const deckId = searchParams.get("deckId");
 
@@ -117,7 +116,7 @@ export default function StudyPage() {
     };
 
     fetchCards();
-  }, [selectedDeckId]);
+  }, [selectedDeckId, deckId]);
 
   const handleUpdateCard = async (cardId: string, memoryStatus: number) => {
     try {
@@ -248,7 +247,7 @@ export default function StudyPage() {
         />
         <div className="bg-white rounded-lg p-8 shadow-md text-center">
           <p className="text-gray-600 mb-4">
-            You don't have any cards to study at this time.
+            You don&apos;t have any cards to study at this time.
             <br />
             Please add flashcards to your deck to start studying.
           </p>
@@ -415,5 +414,12 @@ export default function StudyPage() {
         </Link>
       </div>
     </div>
+  );
+}
+export default function StudyPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <StudyContent />
+    </Suspense>
   );
 }

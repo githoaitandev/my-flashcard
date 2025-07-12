@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase/browserClient";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/ui/Toast";
@@ -39,6 +38,7 @@ export default function Login() {
         router.push("/decks");
         router.refresh();
       }, 1000);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setToastMessage(error.message || "Login failed");
       setToastStatus("error");
@@ -58,6 +58,7 @@ export default function Login() {
       });
 
       if (error) throw error;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Google login error:", error); // Log the error for debugging
       setToastMessage(error.message || "Google login failed");
@@ -120,7 +121,7 @@ export default function Login() {
                 href="/auth/signup"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
-                Don't have an account? Sign up
+                Don&apos;t have an account? Sign up
               </Link>
             </div>
             <div className="text-sm">

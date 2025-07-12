@@ -28,6 +28,7 @@ export default function ForgotPassword() {
       setToastMessage("Password reset link has been sent to your email");
       setToastStatus("success");
       setToastVisible(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setToastMessage(error.message || "Failed to send reset link");
       setToastStatus("error");
@@ -48,7 +49,8 @@ export default function ForgotPassword() {
             Reset your password
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email and we'll send you a link to reset your password
+            Enter your email and we&apos;ll send you a link to reset your
+            password
           </p>
         </div>
 

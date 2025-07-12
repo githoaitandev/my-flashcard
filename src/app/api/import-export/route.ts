@@ -42,13 +42,21 @@ export async function GET(request: NextRequest) {
     const exportData = {
       name: deck.name,
       description: deck.description,
-      cards: deck.cards.map((card: any) => ({
-        englishWord: card.english_word,
-        vietnameseWord: card.vietnamese_word,
-        partOfSpeech: card.part_of_speech,
-        example: card.example,
-        memoryStatus: card.memory_status,
-      })),
+      cards: deck.cards.map(
+        (card: {
+          english_word: string;
+          vietnamese_word: string;
+          part_of_speech: string;
+          example: string | null;
+          memory_status: number;
+        }) => ({
+          englishWord: card.english_word,
+          vietnameseWord: card.vietnamese_word,
+          partOfSpeech: card.part_of_speech,
+          example: card.example,
+          memoryStatus: card.memory_status,
+        })
+      ),
     };
 
     return successResponse(exportData);
@@ -92,6 +100,7 @@ export async function POST(request: NextRequest) {
 
     // Add all cards
     if (importData.cards.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const cardsToCreate = importData.cards.map((card: any) => ({
         english_word: card.englishWord,
         vietnamese_word: card.vietnameseWord,

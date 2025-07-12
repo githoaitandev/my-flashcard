@@ -48,7 +48,7 @@ export default function DeckActions({ deck }: DeckActionsProps) {
 
       setToastMessage("Deck updated successfully!");
       setToastStatus("success");
-    } catch (error) {
+    } catch {
       setToastMessage("Error updating deck");
       setToastStatus("error");
     } finally {
@@ -78,7 +78,7 @@ export default function DeckActions({ deck }: DeckActionsProps) {
       setTimeout(() => {
         router.push("/decks");
       }, TOAST_ALIVE_DURATION);
-    } catch (error) {
+    } catch {
       setToastMessage("Error deleting deck");
       setToastStatus("error");
     } finally {

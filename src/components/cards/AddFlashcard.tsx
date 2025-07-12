@@ -47,7 +47,7 @@ export default function AddFlashcard({ deckId, deckName }: AddFlashcardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-lg font-medium text-gray-900 mb-4">
-        Add Flashcard to "{deckName}"
+        Add Flashcard to &quot;{deckName}&quot;
       </h3>
 
       {error && (
