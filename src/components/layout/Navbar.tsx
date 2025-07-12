@@ -42,9 +42,67 @@ export default function Navbar() {
     { href: "/practice", label: "Practice" },
   ];
 
+  // Authentication section that can be reused in both desktop and mobile views
+  const AuthSection = ({ isMobile = false }) => {
+    if (loading) return null;
+
+    return user ? (
+      <div
+        className={`${
+          isMobile
+            ? "flex flex-col items-start gap-2 mt-4"
+            : "flex items-center space-x-4"
+        }`}
+      >
+        <div
+          className={`px-3 py-2 text-xs font-semibold text-gray-600  ${
+            isMobile ? "hidden" : "block"
+          }`}
+        >
+          {user.email}
+        </div>
+        <button
+          onClick={signOut}
+          className={`px-3 py-2 text-red-400 bg-gray-50 cursor-pointer font-semibold text-sm ${
+            isMobile ? "w-full text-center" : ""
+          }`}
+        >
+          Sign Out
+        </button>
+      </div>
+    ) : (
+      <div
+        className={`${
+          isMobile
+            ? "flex flex-col items-start gap-2 mt-4"
+            : "flex items-center space-x-4"
+        }`}
+      >
+        <Link
+          href="/auth/login"
+          className={`px-3 py-2 text-gray-700 font-semibold text-sm rounded bg-gray-50 hover:bg-gray-100 ${
+            isMobile ? "w-full text-center" : ""
+          }`}
+          onClick={isMobile ? () => setMobileOpen(false) : undefined}
+        >
+          Log In
+        </Link>
+        <Link
+          href="/auth/signup"
+          className={`px-3 py-2 text-gray-700 font-semibold text-sm bg-gray-50 hover:bg-gray-100 ${
+            isMobile ? "w-full text-center" : ""
+          }`}
+          onClick={isMobile ? () => setMobileOpen(false) : undefined}
+        >
+          Sign Up
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="main-header" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-2">
@@ -61,12 +119,9 @@ export default function Navbar() {
             </div>
           </div>
           <div className="hidden md:flex items-center">
-            <Link
-              href="/decks/new"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold shadow hover:bg-blue-700 transition-colors duration-200"
-            >
-              + Create Deck
-            </Link>
+            <nav className="flex items-center">
+              <AuthSection />
+            </nav>
           </div>
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
@@ -114,7 +169,7 @@ export default function Navbar() {
       {/* Mobile menu, animated slide down */}
       <div
         className={`md:hidden bg-white shadow transition-all duration-300 overflow-hidden ${
-          mobileOpen ? "max-h-[400px] py-4" : "max-h-0 py-0"
+          mobileOpen ? "max-h-[500px] py-4" : "max-h-0 py-0"
         }`}
         id="mobile-menu"
       >
@@ -128,63 +183,10 @@ export default function Navbar() {
               {link.label}
             </NavLink>
           ))}
-          <Link
-            href="/decks/new"
-            className="px-4 py-2 mt-2 bg-blue-600 text-white rounded-lg text-sm font-semibold shadow hover:bg-blue-700 transition-colors duration-200"
-            onClick={() => setMobileOpen(false)}
-          >
-            + Create Deck
-          </Link>
+          {/* Authentication section for mobile */}
+          <AuthSection isMobile={true} />
         </div>
       </div>
-      <header className="bg-gray-800 text-white shadow">
-        <div className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
-          <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold">
-              Flashcard App
-            </Link>
-          </div>
-
-          <nav className="flex items-center space-x-4">
-            {!loading && (
-              <>
-                {user ? (
-                  <>
-                    <Link
-                      href="/decks"
-                      className="px-3 py-2 rounded hover:bg-gray-700 transition-colors"
-                    >
-                      My Decks
-                    </Link>
-                    <div className="px-3 py-2">{user.email}</div>
-                    <button
-                      onClick={signOut}
-                      className="px-3 py-2 bg-red-600 rounded hover:bg-red-700 transition-colors"
-                    >
-                      Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      href="/auth/login"
-                      className="px-3 py-2 rounded hover:bg-gray-700 transition-colors"
-                    >
-                      Log In
-                    </Link>
-                    <Link
-                      href="/auth/signup"
-                      className="px-3 py-2 bg-blue-600 rounded hover:bg-blue-700 transition-colors"
-                    >
-                      Sign Up
-                    </Link>
-                  </>
-                )}
-              </>
-            )}
-          </nav>
-        </div>
-      </header>
     </nav>
   );
 }

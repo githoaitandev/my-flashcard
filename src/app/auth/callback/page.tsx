@@ -15,23 +15,21 @@ export default function AuthCallback() {
 
         // When Supabase OAuth returns, it includes the tokens in the URL hash
         // We just need to call setSession() and Supabase will handle the rest
-        setTimeout(async () => {
-          const { data, error } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getSession();
 
-          if (error) {
-            console.error("Error getting session:", error);
-            router.push("/auth/login");
-            return;
-          }
+        if (error) {
+          console.error("Error getting session:", error);
+          router.push("/auth/login");
+          return;
+        }
 
-          if (data?.session) {
-            console.log("Authentication successful");
-            router.push("/decks");
-          } else {
-            console.log("No session found, redirecting to login");
-            router.push("/auth/login");
-          }
-        }, 500);
+        if (data?.session) {
+          console.log("Authentication successful");
+          router.push("/decks");
+        } else {
+          console.log("No session found, redirecting to login");
+          router.push("/auth/login");
+        }
       } catch (err) {
         console.error("Error during authentication:", err);
         router.push("/auth/login");
