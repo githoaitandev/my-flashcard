@@ -16,7 +16,6 @@ export default function NewDeckPage() {
     try {
       setIsLoading(true);
       setError(null);
-      console.log("Creating deck with data:", data);
       const response = await fetch(`${baseUrl}/api/decks`, {
         method: "POST",
         headers: {
