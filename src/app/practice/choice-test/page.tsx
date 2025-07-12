@@ -92,7 +92,7 @@ export default function Page() {
         // If we have a deckId, also fetch the deck name
         if (selectedDeckId) {
           const deckResponse = await fetch(
-            `${baseUrl}/api/decks/${selectedDeckId}`
+            `${baseUrl}/api/decks?id=${selectedDeckId}`
           );
           if (deckResponse.ok) {
             const deckData = await deckResponse.json();

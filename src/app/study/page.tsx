@@ -73,9 +73,7 @@ function StudyContent() {
 
         // If we have a deckId, also fetch the deck name
         if (deckId) {
-          const deckResponse = await fetch(
-            `${baseUrl}/api/decks/?id=${deckId}`
-          );
+          const deckResponse = await fetch(`${baseUrl}/api/decks?id=${deckId}`);
           if (deckResponse.ok) {
             const deckData = await deckResponse.json();
             setDeckName(deckData.data.name);
@@ -253,7 +251,7 @@ function StudyContent() {
           </p>
           <div className="flex justify-center mt-6">
             <Link
-              href={deckId ? `/decks/${deckId}` : "/decks"}
+              href={deckId ? `/decks?id=${deckId}` : "/decks"}
               className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               Go to Deck Detail
@@ -407,7 +405,7 @@ function StudyContent() {
 
       <div className="flex justify-center mt-10">
         <Link
-          href={deckId ? `/decks/${deckId}` : "/decks"}
+          href={deckId ? `/decks?id=${deckId}` : "/decks"}
           className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           {deckId ? "Go to Deck Detail" : "View All Decks"}

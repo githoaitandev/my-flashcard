@@ -32,7 +32,7 @@ export default function NewDeckPage() {
       const result = await response.json();
 
       // Navigate to the new deck's page
-      router.push(`/decks/${result.data.id}`);
+      router.push(`/decks?id=${result.data.id}`);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

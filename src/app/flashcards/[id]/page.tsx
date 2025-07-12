@@ -95,7 +95,7 @@ export default function FlashcardDetail() {
 
       // Redirect back to the deck page
       if (flashcard && flashcard.deckId) {
-        router.push(`/decks/${flashcard.deckId}`);
+        router.push(`/decks?id=${flashcard.deckId}`);
       } else {
         router.push("/decks");
       }
@@ -124,7 +124,7 @@ export default function FlashcardDetail() {
 
       // Redirect back to the deck page
       if (flashcard && flashcard.deckId) {
-        router.push(`/decks/${flashcard.deckId}`);
+        router.push(`/decks?id=${flashcard.deckId}`);
       } else {
         router.push("/decks");
       }
