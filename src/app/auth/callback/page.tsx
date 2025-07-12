@@ -10,26 +10,28 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Simplified approach focused on the hash fragment with access_token
-        console.log("Processing authentication callback");
+        setTimeout(async () => {
+          // Simplified approach focused on the hash fragment with access_token
+          console.log("Processing authentication callback");
 
-        // When Supabase OAuth returns, it includes the tokens in the URL hash
-        // We just need to call setSession() and Supabase will handle the rest
-        const { data, error } = await supabase.auth.getSession();
+          // When Supabase OAuth returns, it includes the tokens in the URL hash
+          // We just need to call setSession() and Supabase will handle the rest
+          const { data, error } = await supabase.auth.getSession();
 
-        if (error) {
-          console.error("Error getting session:", error);
-          router.push("/auth/login");
-          return;
-        }
+          if (error) {
+            console.error("Error getting session:", error);
+            router.push("/auth/login");
+            return;
+          }
 
-        if (data?.session) {
-          console.log("Authentication successful");
-          router.push("/decks");
-        } else {
-          console.log("No session found, redirecting to login");
-          router.push("/auth/login");
-        }
+          if (data?.session) {
+            console.log("Authentication successful");
+            router.push("/decks");
+          } else {
+            console.log("No session found, redirecting to login");
+            router.push("/auth/login");
+          }
+        }, Number(process.env.NEXT_PUBLIC_SESSION_WAIT_TIME)); // Simulate loading delay
       } catch (err) {
         console.error("Error during authentication:", err);
         router.push("/auth/login");
