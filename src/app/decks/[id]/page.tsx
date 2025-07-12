@@ -40,7 +40,6 @@ export default async function DeckPage({
   const masteredCards = deck.cards.filter(
     (card: Flashcard) => card.memoryStatus === 3
   );
-  console.log("Deck:", deck);
   return (
     <div>
       <div className="flex justify-between items-start mb-8">
