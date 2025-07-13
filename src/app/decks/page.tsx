@@ -4,12 +4,19 @@ import DeckCard from "@/components/decks/DeckCard";
 import { Deck } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
 
+async function fetchDecks() {
+  const decksRes = await fetch(`${baseUrl}/api/decks`, { cache: "no-store" });
+  if (!decksRes.ok) {
+    throw new Error("Failed to fetch decks");
+  }
+  const decksJson = await decksRes.json();
+  console.log("Fetched decks:", decksJson);
+  return decksJson.data || [];
+}
 export default async function DecksPage() {
   // Fetch all decks via API
 
-  const res = await fetch(`${baseUrl}/api/decks`, { cache: "no-store" });
-  const json = await res.json();
-  const decks: Deck[] = json.data || [];
+  const decks = await fetchDecks();
 
   return (
     <div>
