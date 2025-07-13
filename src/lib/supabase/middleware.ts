@@ -11,8 +11,7 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
-  console.log(request);
-  console.log(request.cookies.getAll());
+  console.log("mydebug", request.cookies.getAll());
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -38,7 +37,9 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   const path = request.nextUrl.pathname;
+
   const isProtectedPath = protectedPaths.some((route) =>
     path.startsWith(route)
   );
@@ -47,7 +48,7 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
-  console.log(user, isProtectedPath, path);
+  console.log("mydebug", user, isProtectedPath, path);
   if (!user && isProtectedPath) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();

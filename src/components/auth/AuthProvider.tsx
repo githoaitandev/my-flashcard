@@ -70,11 +70,16 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           pathname?.startsWith(route)
         );
         const isAuthRoute = authRoutes.some((route) => pathname === route);
-
+        console.log("Auth check:", {
+          user,
+          isProtectedRoute,
+          isAuthRoute,
+          pathname,
+        });
         if (isProtectedRoute && !user) {
           router.push("/auth/login");
         } else if (isAuthRoute && user) {
-          router.push("/decks");
+          router.push("/");
         }
       } catch (error) {
         console.error("Auth check error:", error);

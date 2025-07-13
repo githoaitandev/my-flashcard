@@ -54,9 +54,14 @@ export default function UpdatePassword() {
       setToastVisible(true);
 
       // Redirect after successful password update
-      setTimeout(() => {
-        router.push("/decks");
-      }, 2000);
+      // setTimeout(
+      //   () => {
+      //     router.push("/");
+      //   },
+      //   process.env.NEXT_PUBLIC_SESSION_WAIT_TIME
+      //     ? Number(process.env.NEXT_PUBLIC_SESSION_WAIT_TIME)
+      //     : 1000
+      // );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setToastMessage(error.message || "Failed to update password");

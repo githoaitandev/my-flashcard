@@ -33,11 +33,16 @@ export default function Login() {
       setToastStatus("success");
       setToastVisible(true);
 
-      // Redirect after successful login
-      setTimeout(() => {
-        router.push("/decks");
-        router.refresh();
-      }, 1000);
+      // // Redirect after successful login
+      setTimeout(
+        () => {
+          router.push("/");
+          router.refresh();
+        },
+        process.env.NEXT_PUBLIC_SESSION_WAIT_TIME
+          ? Number(process.env.NEXT_PUBLIC_SESSION_WAIT_TIME)
+          : 1000
+      );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setToastMessage(error.message || "Login failed");
@@ -53,7 +58,10 @@ export default function Login() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
       });
 
