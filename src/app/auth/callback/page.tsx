@@ -10,28 +10,46 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        setTimeout(async () => {
-          // Simplified approach focused on the hash fragment with access_token
-          console.log("Processing authentication callback");
+        console.log("Processing authentication callback");
 
-          // When Supabase OAuth returns, it includes the tokens in the URL hash
-          // We just need to call setSession() and Supabase will handle the rest
-          const { data, error } = await supabase.auth.getSession();
+        // Lấy access_token và refresh_token từ URL hash
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
+
+        if (accessToken && refreshToken) {
+          // Thiết lập session với Supabase
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
 
           if (error) {
-            console.error("Error getting session:", error);
+            console.error("Error setting session:", error);
             router.push("/auth/login");
             return;
           }
 
-          if (data?.session) {
-            console.log("Authentication successful");
-            router.push("/decks");
-          } else {
-            console.log("No session found, redirecting to login");
-            router.push("/auth/login");
-          }
-        }, Number(process.env.NEXT_PUBLIC_SESSION_WAIT_TIME)); // Simulate loading delay
+          console.log("Session successfully set");
+        }
+
+        // Chờ session được thiết lập
+        const { data, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("Error getting session:", sessionError);
+          router.push("/auth/login");
+          return;
+        }
+
+        if (data?.session) {
+          console.log("Authentication successful");
+          router.push("/");
+        } else {
+          console.log("No session found, redirecting to login");
+          router.push("/auth/login");
+        }
       } catch (err) {
         console.error("Error during authentication:", err);
         router.push("/auth/login");
