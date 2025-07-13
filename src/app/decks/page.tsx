@@ -3,6 +3,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import DeckCard from "@/components/decks/DeckCard";
 import { Deck } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
+import { createClient } from "@/lib/supabase/serverClient";
 
 async function fetchDecks() {
   const decksRes = await fetch(`${baseUrl}/api/decks`, { cache: "no-store" });
@@ -15,7 +16,13 @@ async function fetchDecks() {
 }
 export default async function DecksPage() {
   // Fetch all decks via API
-
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return <></>;
+  }
   const decks = await fetchDecks();
 
   return (
