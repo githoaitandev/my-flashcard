@@ -6,13 +6,10 @@ import Link from "next/link";
 import baseUrl from "@/utils/baseUrl";
 import Toast from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
+import { DeckWithDetails } from "@/utils/client-types";
 
 interface DeckActionsProps {
-  deck: {
-    id: string;
-    name: string;
-    description?: string;
-  };
+  deck: DeckWithDetails;
 }
 const TOAST_ALIVE_DURATION = 3000;
 export default function DeckActions({ deck }: DeckActionsProps) {

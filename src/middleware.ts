@@ -1,46 +1,78 @@
-import { NextRequest } from "next/server";
-import { updateSession } from "./lib/supabase/middleware";
+import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
 // Protected routes that require authentication
-// const protectedPaths = ["/decks", "/practice", "/study", "/flashcards"];
+const protectedPaths = [
+  "/decks",
+  "/decks/*",
+  "/practice",
+  "/study",
+  "/flashcards",
+  "/",
+];
 
 // Routes that are only accessible when not logged in
-// const authPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
+const authPaths = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
 
 export async function middleware(request: NextRequest) {
-  //   const response = NextResponse.next();
+  let supabaseResponse = NextResponse.next({
+    request,
+  });
+  // Create supabase middleware client
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
+          supabaseResponse = NextResponse.next({
+            request,
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
 
-  //   // Create supabase middleware client
-  //   const supabase = createMiddlewareClient({ req: request, res: response });
+  // Refresh session if expired - required for Server Components
+  await supabase.auth.getSession();
 
-  //   // Refresh session if expired - required for Server Components
-  //   await supabase.auth.getSession();
+  // Check if user is authenticated
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  //   // Check if user is authenticated
-  //   const {
-  //     data: { user },
-  //   } = await supabase.auth.getUser();
+  const path = request.nextUrl.pathname;
+  // Handle protected routes - redirect to login if not authenticated
+  const isProtectedPath = protectedPaths.some((route) => {
+    if (route.endsWith("/*")) {
+      const base = route.replace("/*", "");
+      return path === base || path.startsWith(`${base}/`);
+    }
+    return path === route;
+  });
 
-  //   const path = request.nextUrl.pathname;
+  if (isProtectedPath && !user) {
+    const redirectUrl = new URL("/auth/login", request.url);
+    redirectUrl.searchParams.set("redirectedFrom", path);
+    return NextResponse.redirect(redirectUrl);
+  }
 
-  //   // Handle protected routes - redirect to login if not authenticated
-  //   const isProtectedPath = protectedPaths.some((route) =>
-  //     path.startsWith(route)
-  //   );
-  //   if (isProtectedPath && !user) {
-  //     const redirectUrl = new URL("/auth/login", request.url);
-  //     redirectUrl.searchParams.set("redirectedFrom", path);
-  //     return NextResponse.redirect(redirectUrl);
-  //   }
+  // Handle auth routes - redirect to home if already authenticated
+  const isAuthPath = authPaths.some((route) => path === route);
+  if (isAuthPath && user) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
-  //   // Handle auth routes - redirect to home if already authenticated
-  //   const isAuthPath = authPaths.some((route) => path === route);
-  //   if (isAuthPath && user) {
-  //     return NextResponse.redirect(new URL("/decks", request.url));
-  //   }
-
-  //   return response;
-  return await updateSession(request);
+  return supabaseResponse;
 }
 
 // Configure the middleware to run on specific paths

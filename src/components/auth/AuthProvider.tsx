@@ -5,17 +5,11 @@ import {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 import { supabase } from "@/lib/supabase/browserClient";
-import { useRouter, usePathname } from "next/navigation";
 import type { User } from "@/lib/supabase/browserClient";
-
-// Protected routes that require authentication
-const protectedRoutes = ["/decks", "/practice", "/study", "/flashcards", "/"];
-
-// Routes that are only accessible when not logged in
-const authRoutes = ["/auth/login", "/auth/signup", "/auth/forgot-password"];
 
 interface AuthContextType {
   user: User | null;
@@ -36,72 +30,49 @@ export const useAuth = () => useContext(AuthContext);
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const pathname = usePathname();
 
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    } catch {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    } catch (err) {
       setUser(null);
     }
-  };
+  }, []);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     setUser(null);
-    router.push("/auth/login");
-  };
+  }, []);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const fetchUser = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        setUser(user);
-
-        // Route protection logic
-        const isProtectedRoute = protectedRoutes.some((route) =>
-          pathname?.startsWith(route)
-        );
-        const isAuthRoute = authRoutes.some((route) => pathname === route);
-        console.log("Auth check:", {
-          user,
-          isProtectedRoute,
-          isAuthRoute,
-          pathname,
-        });
-        if (isProtectedRoute && !user) {
-          router.push("/auth/login");
-        } else if (isAuthRoute && user) {
-          router.push("/");
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
+        const { data } = await supabase.auth.getUser();
+        setUser(data.user);
+      } catch {
         setUser(null);
       } finally {
         setLoading(false);
       }
     };
 
-    checkAuth();
+    fetchUser();
 
     const {
       data: { subscription },
+    } = supabase.auth.onAuthStateChange(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-      setUser(session?.user ?? null);
-    });
+      (_event: any, session: any) => {
+        setUser(session?.user ?? null);
+      }
+    );
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, pathname]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, loading, signOut, refreshUser }}>

@@ -55,10 +55,14 @@ export default function Login() {
 
   const handleGoogleLogin = async () => {
     try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectedFrom = searchParams.get("next") || "/";
+      const redirectUrl = `${window.location.origin}${redirectedFrom}`;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`,
+          redirectTo: redirectUrl,
           queryParams: {
             access_type: "offline",
             prompt: "consent",

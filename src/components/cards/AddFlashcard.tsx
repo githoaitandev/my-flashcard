@@ -34,7 +34,7 @@ export default function AddFlashcard({ deckId, deckName }: AddFlashcardProps) {
         throw new Error(errorData.error || "Failed to add flashcard");
       }
 
-      // Refresh the page to show the new flashcard
+      alert("Flashcard added successfully!");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

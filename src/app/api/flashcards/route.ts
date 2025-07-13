@@ -1,10 +1,17 @@
-import { supabase } from "@/lib/supabase/browserClient";
 import { successResponse, errorResponse } from "@/lib/api-utils";
 import { NextRequest } from "next/server";
 import { FlashcardCreate } from "@/lib/types";
+import { createClient } from "@/lib/supabase/serverClient";
 
 export async function GET(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return errorResponse("Unauthorized", 401);
+    }
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     const deckId = searchParams.get("deckId");
@@ -57,6 +64,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return errorResponse("Unauthorized", 401);
+    }
     const data: FlashcardCreate = await request.json();
     if (!data.englishWord || !data.vietnameseWord || !data.deckId) {
       return errorResponse("Missing required fields");
@@ -85,6 +99,13 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return errorResponse("Unauthorized", 401);
+    }
     const { searchParams } = new URL(request.url);
     const cardId = searchParams.get("id");
     const memoryStatus = searchParams.get("memoryStatus");
@@ -110,6 +131,13 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return errorResponse("Unauthorized", 401);
+    }
     const { searchParams } = new URL(request.url);
     const cardId = searchParams.get("id");
 
