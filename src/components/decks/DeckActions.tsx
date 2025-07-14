@@ -6,13 +6,10 @@ import Link from "next/link";
 import baseUrl from "@/utils/baseUrl";
 import Toast from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
+import { DeckWithDetails } from "@/utils/client-types";
 
 interface DeckActionsProps {
-  deck: {
-    id: string;
-    name: string;
-    description?: string;
-  };
+  deck: DeckWithDetails;
 }
 const TOAST_ALIVE_DURATION = 3000;
 export default function DeckActions({ deck }: DeckActionsProps) {
@@ -102,7 +99,7 @@ export default function DeckActions({ deck }: DeckActionsProps) {
         href={`/practice?deckId=${deck.id}`}
         className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-semibold rounded-md text-gray-700 bg-white hover:bg-gray-50"
       >
-        Practice Writing
+        Practice Deck
       </Link>
       <button
         onClick={() => setOpen(true)}

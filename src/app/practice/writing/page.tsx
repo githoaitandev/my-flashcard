@@ -30,7 +30,9 @@ function WritingPracticeContent() {
   useEffect(() => {
     const fetchDecks = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/decks`);
+        const response = await fetch(`${baseUrl}/api/decks`, {
+          cache: "no-store",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch decks");
         }
@@ -68,7 +70,12 @@ function WritingPracticeContent() {
 
         // If we have a deckId, also fetch the deck name
         if (deckId) {
-          const deckResponse = await fetch(`${baseUrl}/api/decks?id=${deckId}`);
+          const deckResponse = await fetch(
+            `${baseUrl}/api/decks?id=${deckId}`,
+            {
+              cache: "no-store",
+            }
+          );
           if (deckResponse.ok) {
             const deckData = await deckResponse.json();
             setDeckName(deckData.data.name);

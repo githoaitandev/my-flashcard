@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import FlashcardForm from "./FlashcardForm";
 import { FlashcardCreate } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
+import { mutate } from "swr";
 
 interface AddFlashcardProps {
   deckId: string;
@@ -12,7 +12,6 @@ interface AddFlashcardProps {
 }
 
 export default function AddFlashcard({ deckId, deckName }: AddFlashcardProps) {
-  const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,8 +33,7 @@ export default function AddFlashcard({ deckId, deckName }: AddFlashcardProps) {
         throw new Error(errorData.error || "Failed to add flashcard");
       }
 
-      // Refresh the page to show the new flashcard
-      router.refresh();
+      mutate(`${baseUrl}/api/decks?id=${deckId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       console.error("Error adding flashcard:", err);

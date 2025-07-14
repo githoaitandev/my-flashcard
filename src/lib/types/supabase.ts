@@ -114,7 +114,7 @@ export interface Database {
     Functions: {
       delete_deck_and_flashcards: {
         Args: {
-          deck_id: string;
+          target_deck_id: string;
         };
         Returns: undefined;
       };

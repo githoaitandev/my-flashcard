@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
     query = query
       .order("last_reviewed", { ascending: true, nullsFirst: true })
       .order("created_at", { ascending: false })
+      .eq("user_id", user.id)
       .limit(limit);
 
     const { data: studyCards, error } = await query;
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
           deck_id: body.deckId || null,
           card_count: body.cardCount,
           started_at: new Date().toISOString(),
+          user_id: user.id,
         },
       ])
       .select()
@@ -75,6 +77,7 @@ export async function POST(request: NextRequest) {
           correct_count: body.correctCount || 0,
           ended_at: body.endedAt,
         })
+        .eq("user_id", user.id)
         .eq("id", newSession.id);
     }
     return successResponse(newSession, 201);

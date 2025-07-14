@@ -18,7 +18,8 @@
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "snakecase-keys": "^9.0.2"
+    "snakecase-keys": "^9.0.2",
+    "swr": "^2.3.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

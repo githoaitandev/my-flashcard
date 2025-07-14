@@ -181,10 +181,9 @@ export default function FlashcardSlider({
         </div>
         <button
           onClick={handleNext}
-          disabled={currentIndex === cards.length - 1}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-r disabled:opacity-50"
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-r"
         >
-          Next &rarr;
+          {currentIndex === cards.length - 1 ? "Finish" : "Next →"}
         </button>
       </div>
     </div>

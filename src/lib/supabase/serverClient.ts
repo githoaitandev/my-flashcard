@@ -27,7 +27,3 @@ export async function createClient() {
     }
   );
 }
-
-// export type User = Awaited<
-//   ReturnType<typeof supabase.auth.getUser>
-// >["data"]["user"];
