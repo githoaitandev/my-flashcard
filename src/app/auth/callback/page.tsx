@@ -13,9 +13,17 @@ export default function AuthCallback() {
       try {
         console.log("Processing authentication callback");
 
-        // Đăng nhập thành công, supabase tự cập nhật session
-        const { data, error } = await supabase.auth.getSession();
+        // Xử lý session từ URL callback
+        const { error: exchangeError } =
+          await supabase.auth.exchangeCodeForSession();
+        if (exchangeError) {
+          console.error("Error exchanging code for session:", exchangeError);
+          router.push("/auth/login");
+          return;
+        }
 
+        // Kiểm tra session sau khi xử lý
+        const { data, error } = await supabase.auth.getSession();
         if (error) {
           console.error("Error getting session:", error);
           router.push("/auth/login");
