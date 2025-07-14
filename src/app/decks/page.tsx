@@ -5,7 +5,6 @@ import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import DeckCard from "@/components/decks/DeckCard";
 import { DeckWithDetails } from "@/utils/client-types";
-import { useRouter } from "next/navigation";
 
 // Loading skeleton component
 const DecksSkeleton = () => (
@@ -57,7 +56,6 @@ const DeckList = ({ decks }: { decks: DeckWithDetails[] }) => (
 export default function DecksPage() {
   const [decks, setDecks] = useState<DeckWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   const fetchDecks = useCallback(async () => {
     setLoading(true);

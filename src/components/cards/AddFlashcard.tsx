@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import FlashcardForm from "./FlashcardForm";
 import { FlashcardCreate } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
@@ -13,7 +12,6 @@ interface AddFlashcardProps {
 }
 
 export default function AddFlashcard({ deckId, deckName }: AddFlashcardProps) {
-  const router = useRouter();
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

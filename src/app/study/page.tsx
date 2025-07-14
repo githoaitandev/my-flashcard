@@ -388,6 +388,9 @@ function StudyContent() {
                 ...prev,
                 current: prev.current + 1,
               }));
+            } else {
+              // Ensure the last card marks the session as completed
+              setIsCompleted(true);
             }
           }}
           onPrev={() => {

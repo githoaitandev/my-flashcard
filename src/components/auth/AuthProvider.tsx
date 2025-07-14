@@ -35,7 +35,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data } = await supabase.auth.getUser();
       setUser(data.user);
-    } catch (err) {
+    } catch {
       setUser(null);
     }
   }, []);
