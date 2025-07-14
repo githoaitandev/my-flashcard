@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState, Suspense } from "react";
-import { notFound, useParams } from "next/navigation";
+import { Suspense } from "react";
+import { useParams } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import FlashcardList from "@/components/cards/FlashcardList";
 import ImportExport from "@/components/decks/ImportExport";
@@ -9,53 +9,40 @@ import baseUrl from "@/utils/baseUrl";
 import DeckActions from "@/components/decks/DeckActions";
 import { Flashcard } from "@/lib/types";
 import { DeckWithDetails } from "@/utils/client-types";
+import useSWR from "swr";
+
+const deckFetcher = async (url: string) => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || "Failed to fetch data");
+  }
+  const responseData = await res.json();
+  return responseData.data as DeckWithDetails;
+};
 
 export default function DeckPage() {
   const { id } = useParams();
-  const [deck, setDeck] = useState<DeckWithDetails | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    async function fetchDeck() {
-      try {
-        const response = await fetch(`${baseUrl}/api/decks?id=${id}`, {
-          cache: "no-store",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch deck");
-        }
-        const responseJson = await response.json();
-        if (!responseJson.data) {
-          notFound();
-        }
-        setDeck(responseJson.data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+  const { data: deck, error } = useSWR(
+    `${baseUrl}/api/decks?id=${id}`,
+    deckFetcher,
+    {
+      suspense: true,
     }
-
-    fetchDeck();
-  }, [id]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+  );
   if (error) {
     return (
       <div className="bg-red-100 rounded-lg shadow-md p-8 text-center">
         <h3 className="text-lg font-medium text-red-900 mb-2">Error</h3>
-        <p className="text-red-600 mb-4">{error}</p>
+        <p className="text-red-600 mb-4">{error.message}</p>
       </div>
     );
   }
 
   if (!deck) {
-    return null;
+    return <div>Loading...</div>;
   }
-
   // Organize cards by memory status
   const newCards = deck.cards.filter(
     (card: Flashcard) => card.memoryStatus === 0

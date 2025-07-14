@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import FlashcardForm from "./FlashcardForm";
 import { FlashcardCreate } from "@/lib/types";
 import baseUrl from "@/utils/baseUrl";
+import { mutate } from "swr";
 
 interface AddFlashcardProps {
   deckId: string;
@@ -34,8 +35,7 @@ export default function AddFlashcard({ deckId, deckName }: AddFlashcardProps) {
         throw new Error(errorData.error || "Failed to add flashcard");
       }
 
-      alert("Flashcard added successfully!");
-      router.refresh();
+      mutate(`${baseUrl}/api/decks?id=${deckId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       console.error("Error adding flashcard:", err);
