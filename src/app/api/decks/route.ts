@@ -190,7 +190,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const { error } = await supabase.rpc("delete_deck_and_flashcards", {
-      deck_id: deckId,
+      target_deck_id: deckId,
     });
 
     if (error) throw error;
