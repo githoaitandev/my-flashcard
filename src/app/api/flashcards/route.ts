@@ -71,10 +71,23 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return errorResponse("Unauthorized", 401);
     }
+
     const data: FlashcardCreate = await request.json();
     if (!data.englishWord || !data.vietnameseWord || !data.deckId) {
       return errorResponse("Missing required fields");
     }
+
+    const { data: deck, error: deckError } = await supabase
+      .from("deck")
+      .select("id")
+      .eq("id", data.deckId)
+      .eq("user_id", user.id)
+      .single();
+
+    if (deckError || !deck) {
+      return errorResponse("Deck not found or unauthorized", 403);
+    }
+
     const { data: newFlashcard, error } = await supabase
       .from("flashcard")
       .insert([
@@ -89,6 +102,7 @@ export async function POST(request: NextRequest) {
       ])
       .select()
       .single();
+
     if (error) throw error;
     return successResponse(newFlashcard, 201);
   } catch (error) {
@@ -106,12 +120,36 @@ export async function PUT(request: NextRequest) {
     if (!user) {
       return errorResponse("Unauthorized", 401);
     }
+
     const { searchParams } = new URL(request.url);
     const cardId = searchParams.get("id");
     const memoryStatus = searchParams.get("memoryStatus");
+
     if (!cardId || memoryStatus === null) {
       return errorResponse("Missing required parameters");
     }
+
+    const { data: flashcard, error: flashcardError } = await supabase
+      .from("flashcard")
+      .select("deck_id")
+      .eq("id", cardId)
+      .single();
+
+    if (flashcardError || !flashcard) {
+      return errorResponse("Flashcard not found or unauthorized", 403);
+    }
+
+    const { data: deck, error: deckError } = await supabase
+      .from("deck")
+      .select("id")
+      .eq("id", flashcard.deck_id)
+      .eq("user_id", user.id)
+      .single();
+
+    if (deckError || !deck) {
+      return errorResponse("Deck not found or unauthorized", 403);
+    }
+
     const { data: updatedFlashcard, error } = await supabase
       .from("flashcard")
       .update({
@@ -121,6 +159,7 @@ export async function PUT(request: NextRequest) {
       .eq("id", cardId)
       .select()
       .single();
+
     if (error) throw error;
     return successResponse(updatedFlashcard);
   } catch (error) {
