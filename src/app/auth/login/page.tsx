@@ -55,9 +55,7 @@ export default function Login() {
 
   const handleGoogleLogin = async () => {
     try {
-      const searchParams = new URLSearchParams(window.location.search);
-      const redirectedFrom = searchParams.get("next") || "/";
-      const redirectUrl = `${window.location.origin}${redirectedFrom}`;
+      const redirectUrl = `${window.location.origin}/auth/callback`;
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -69,7 +67,6 @@ export default function Login() {
           },
         },
       });
-
       if (error) throw error;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
