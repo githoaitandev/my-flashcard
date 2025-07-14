@@ -7,7 +7,12 @@ let supabaseClient: ReturnType<typeof createBrowserClient> | null = null;
 
 function getSupabaseClient() {
   if (!supabaseClient) {
-    supabaseClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    supabaseClient = createBrowserClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: true,
+      },
+    });
   }
   return supabaseClient;
 }

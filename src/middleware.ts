@@ -28,9 +28,13 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
+          cookiesToSet.forEach(({ name, value, options }) => {
+            return supabaseResponse.cookies.set(name, value, {
+              ...options,
+              secure: true, // Đảm bảo cookie chỉ được gửi qua HTTPS
+              sameSite: "none", // Hỗ trợ cross-site
+            });
+          });
           supabaseResponse = NextResponse.next({
             request,
           });
@@ -59,7 +63,14 @@ export async function middleware(request: NextRequest) {
     }
     return path === route;
   });
-
+  console.log(
+    "Checking path:",
+    path,
+    "Protected:",
+    isProtectedPath,
+    "User:",
+    user
+  );
   if (isProtectedPath && !user) {
     const redirectUrl = new URL("/auth/login", request.url);
     redirectUrl.searchParams.set("redirectedFrom", path);
